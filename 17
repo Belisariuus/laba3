@@ -1,0 +1,19 @@
+// 17. Для данного вещественного числа x и натурального n вычислить:
+// a) sin x + sin2x + ... + sinnx
+#include <stdio.h>
+#include <math.h>
+int main()
+{
+  int a,b,c;
+  c=1;
+  scanf("%d",&a);
+  float x,q,y,t; x = 5.0;t=0;
+  for (b = 1; c<=a; b++)
+    {
+      q=sin(x);
+      y = pow(q,c);
+      c+=1;
+      t+=y;
+    }
+printf("%f",t);
+}
