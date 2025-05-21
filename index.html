@@ -1,0 +1,82 @@
+{% load static %}
+<html lang="ru" data-bs-theme="dark">
+<head>
+    <title>ML helper</title>
+    <link rel="icon" href="{% static 'icon_mlhelper.png' %}">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body style="margin: 0;" class="bg-light">
+
+    <header class="navbar navbar-expand-lg border-bottom bg-dark sticky-top text-center text-light  py-2">
+        <div class="container justify-content-start">
+            <img src="{% static 'icon_mlhelper.png' %}" width="60">
+            <li class="nav-link fs-4 px-5">ML helper</li>
+        </div>
+    </header>
+
+    <main class="bg-light">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-body-tertiary bg-light">
+            <div class="col-md-6 p-lg-5 mx-auto my-5">
+                <h1 class="display-3 fw-bold">ML помощник</h1>
+                <h3 class="fw-normal text-muted mb-3">Обучи свою модель сам</h3>
+
+                <!-- ***************БЛОК С СООБЩЕНИЕМ ОБ ОШИБКЕ******************************-->
+                {% if messages %}
+                <div>
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <!-- ***********************************************************************-->
+
+                <!-- ***************БЛОК С ФОРМОЙ ДЛЯ ЗАГРУЗКИ ФАЙЛА******************************-->
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+<!--                    <div class="d-flex justify-content-center align-items-center">-->
+<!--                         <div class="form-check form-switch mb-3">-->
+<!--                             <label for="mean" class="form-check-label">Использовать обученную модель</label>-->
+<!--                            <input class="form-check-input missing" type="checkbox" name="mean" id="mean"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                                        <div id="forms" hidden>-->
+<!--                    {% csrf_token %}-->
+<!--                    {{ form.as_p }}-->
+<!--                                       </div>-->
+
+                    <button type="submit" class="btn btn-dark btn-lg" style="width: 100%;">Загрузить</button>
+                </form>
+                <!-- ***********************************************************************-->
+
+            </div>
+
+        </div>
+    </main>
+
+
+    <div class="bg-dark fixed-bottom" style="width: 100%">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            </ul>
+        </footer>
+    </div>
+<script>
+    const check = document.getElementById('mean');
+    const div = document.getElementById('forms');
+
+    check.addEventListener('change', function() {
+        if (check.checked){
+            div.hidden = false;
+        }
+        else {
+            div.hidden = true;
+        }
+    });
+</script>
+</body>
+</html>
