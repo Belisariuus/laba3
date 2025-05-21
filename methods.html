@@ -1,0 +1,550 @@
+{% load static %}
+<html lang="ru" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор методов</title>
+    <link rel="icon" href="{% static 'icon_mlhelper.png' %}">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/forms.js' %}"></script>
+    <script src="{% static 'popper/dist/umd/popper.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrapicons/font/bootstrap-icons.css' %}">
+    <style>
+        .custom-tooltip {
+            display: none;
+            position: absolute;
+            padding: 8px 12px;
+            background-color: #f0f8ff;
+            color: #0000ff;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+            z-index: 100;
+        }
+        .custom-tooltip:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: #f0f8ff transparent transparent transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+
+            <!--********************ЛЕВАЯ ПАНЕЛЬ********************-->
+            <div class="col-lg-3 bg-light p-3" style="min-height: 100vh">
+                <h4 class="text-center">Методы</h4>
+                <p class="text-muted text-center">Кликните на раздел, чтобы раскрыть его</p>
+                <div class="list-group list-group flush scrollarea">
+
+                    <!--********************МЕТОДЫ ПРЕДВАТРИТЕЛЬНОЙ ОБРАБОТКИ********************-->
+                    <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom border-top" onclick="showElement('prepare')">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <a href="#" class="mb-1 fs-5 text-dark text-decoration-none">Предварительная обработка</a>
+                        </div>
+                    </div>
+
+                    <div id="prepare" hidden>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom ">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="MissingValues">
+                                <strong class="mb-1">Работа с пропусками</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Включает методы обработки отсутствующих значений, такие как удаление, замена средними значениями для повышения качества данных.
+                                <a href="{% url 'missing_values_graph' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable"  draggable="true" data-method="TextDataPrepare">
+                                <strong class="mb-1 tooltip-text">Работа с текстовыми данными</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Предусматривает преобразование текстовой информации, включая лемматизацию и векторизацию для последующего анализа.
+                                <a href="{% url 'text_prepare_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*************************************************************************-->
+
+
+                    <!--********************МЕТОДЫ КЛАССИФИКАЦИИ********************-->
+                    <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom" onclick="showElement('classification')">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <a href="#" class="mb-1 fs-5 text-dark text-decoration-none">Методы классификации</a>
+                        </div>
+                    </div>
+
+                    <div id="classification" hidden>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="xgboost_classifier">
+                                <strong class="mb-1">Классификации XGBOOST</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Мощный алгоритм градиентного бустинга, эффективно работающий с большими и сложными данными за счёт оптимизации скорости.
+                                <a href="{% url 'classification_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="knn_classifier">
+                                <strong class="mb-1">Классификации KNearestNeighbors</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Алгоритм, классифицирующий объекты по большинству классов среди К ближайших соседей в пространстве признаков.
+                                <a href="{% url 'classification_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="random_forest_classifier">
+                                <strong class="mb-1">Классификации RandomForest</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Ансамблевый метод, использующий множество решающих деревьев для повышения точности и предотвращения переобучения.
+                                <a href="{% url 'classification_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*************************************************************************-->
+
+
+                    <!--********************МЕТОДЫ ПОИСКА АНОМАЛИЙ********************-->
+                    <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom" onclick="showElement('anomalies')">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <a href="#" class="mb-1 fs-5 text-dark text-decoration-none">Методы поиска аномалий</a>
+                        </div>
+                    </div>
+
+                    <div id="anomalies" hidden>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="IsolationForest">
+                                <strong class="mb-1">Isolation Forest</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Алгоритм, использующий изоляцию объектов для выявления аномалий на основе построения случайных деревьев.
+                                <a href="{% url 'anomaly_detection_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="LocalOutlierFactor">
+                                <strong class="mb-1">Local Outlier Factor</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Метод, оценивающий степень "аномальности" объектов, сравнивая их плотность с плотностью соседей.
+                                <a href="{% url 'anomaly_detection_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="LinearSVC">
+                                <strong class="mb-1">Linear SVC</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Метод опорных векторов, позволяющий выявлять аномалии путем построения линейных границ между классами данных.
+                                <a href="{% url 'anomaly_detection_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*************************************************************************-->
+
+
+                    <!--********************МЕТОДЫ КЛАСТЕРИЗАЦИИ********************-->
+                    <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom" onclick="showElement('clusterization')">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <a href="#" class="mb-1 fs-5 text-dark text-decoration-none">Методы кластеризации</a>
+                        </div>
+                    </div>
+
+                    <div id="clusterization" hidden>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="k_means_clusterization">
+                                <strong class="mb-1">Кластеризация KMeans</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Метод, который делит данные на К кластеров, минимизируя внутрикластерное расстояние с использованием центроидов.
+                                <a href="{% url 'clusterization_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="agglomerative_clusterization">
+                                <strong class="mb-1">Иерархическая кластеризация</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Метод, создающий древовидную структуру кластеров, постепенно объединяя или разделяя группы объектов.
+                                <a href="{% url 'clusterization_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="dbscan_clusterization">
+                                <strong class="mb-1">Кластеризация DBSCAN</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Плотностной алгоритм, выделяющий кластеры произвольной формы и эффективно работающий с шумными данными.
+                                <a href="{% url 'clusterization_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*************************************************************************-->
+
+
+                    <!--********************МЕТОДЫ РЕГРЕССИИ********************-->
+                    <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom" onclick="showElement('regression')">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <a href="#" class="mb-1 fs-5 text-dark text-decoration-none">Методы регрессии</a>
+                        </div>
+                    </div>
+
+                    <div hidden id="regression">
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="LinearRegression">
+                                <strong class="mb-1">Линейная регрессия</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Самый простой метод регресии. Моделирует зависимость между независимой и зависимой переменной с помощью линейного уравнения.
+                                <a href="{% url 'regression_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="RandomForest">
+                                <strong class="mb-1">Random Forest</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Это ансамблевый метод. Использует множество решающих деревьев для предсказаний.
+                                <a href="{% url 'regression_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                        <div class="list-group item list-group-item-action py-3 px-3 lh-sm border-bottom">
+                            <div class="d-flex w-100 align-items-center justify-content-between draggable" draggable="true" data-method="SGDRegression">
+                                <strong class="mb-1">SGD регрессия</strong>
+                            </div>
+                            <div class="col-10 mb-1 small">
+                                Стохастический градиентный спуск. Оптимизирует модель, обновляя параметры на основе небольших подмножеств данных.
+                                <a href="{% url 'regression_information' %}" class="p-0 nav-link">Узнать подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--*************************************************************************-->
+
+                </div>
+            </div>
+            <!--*************************************************************************-->
+
+
+            <!--*************************ЦЕНТРАЛЬНАЯ ПАНЕЛЬ***********************-->
+            <meta name="csrf-token" content="{{ csrf_token }}">
+            <div class="col-lg-8 p-3">
+                <h4 class="text-center">Настройка параметров</h4>
+                <div id="parametersArea" class="border rounded p-3 mb-3" style="min-height: 85vh">
+                    <p class="text-muted text-center lab">Перетащите метод сюда, чтобы настроить параметры</p>
+                </div>
+                <button class="btn btn-dark abs" id="submit-btn" style="width: 100%">Сохранить</button>
+                <a class="btn btn-dark" href="{% url 'final' %}" id="but" hidden style="width: 100%">Форма успешно обработана! Нажмите для перехода результам</a>
+            </div>
+            <!--*************************************************************************-->
+
+            <!--*************************ПРАВАЯ ПАНЕЛЬ***********************-->
+            <div class="col-lg-1 bg-light p-3">
+
+            </div>
+            <!--*************************************************************************-->
+        </div>
+    </div>
+<script type="text/javascript">
+
+//  *******ФУНКЦИЯ ДЛЯ РАСКРЫТИЯ СПИСКОВ МЕТОДОВ **********
+    function showElement(id){
+        const element = document.getElementById(id)
+        if (element.hidden === true){
+            element.hidden = false;
+        }
+        else{
+            element.hidden = true;
+        }
+    };
+//  ******************************************************
+
+
+    const methodList = document.querySelectorAll('.draggable');
+    const parametersArea = document.getElementById('parametersArea');
+    const submitButton = document.getElementById('submit-btn')
+    let isFormInZone = false;
+    let columns = "{{ columns|safe }}";
+    columns = columns.replace(/'/g, '"');
+    columns = JSON.parse(columns);
+
+//  *****************************ТЕХНОЛОГИЯ DRAG AND DROP******************************
+    methodList.forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.method);
+            if (isFormInZone === true && e.target.dataset.method !== 'MissingValues' && e.target.dataset.method !== 'TextDataPrepare'){
+                alert('Область уже занята! Удалите существующий метод, потом добавляйте другой!')
+            }
+        });
+    });
+    parametersArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+    parametersArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const method = e.dataTransfer.getData('text/plain');
+        if (methods_forms[method]['draw_status']=== false){
+            const method_div = document.createElement('div');
+            method_div.className = `card mb-3 ${method} block`;
+            method_div.innerHTML = methods_forms[method]['html'];
+            methods_forms[method]['draw_status'] = true;
+            parametersArea.appendChild(method_div);
+            if (method === 'MissingValues'){
+                MissingValuesFormListener();
+            }
+            if (method === 'TextDataPrepare'){
+                initColumnSelector();
+            }
+            if (`${method}` === 'MissingValues' || method === 'TextDataPrepare'){
+            }
+            else{
+                isFormInZone = true;
+            }
+            const block_name = document.querySelector('[data-method="' + method + '"]');
+            const parent = block_name.parentNode;
+            parent.classList.add('bg-dark');
+            parent.classList.add('text-light');
+        }
+    });
+//  ****************************************************************************************
+
+
+// ************************ ИНИЦИАЛИЗАЦИЯ СЕЛЕКТОРА В ФОРМЕ **********************************
+
+
+    function initColumnSelector(){
+        console.log(columns);
+        const select = document.getElementById('columns');
+        select.innerHTML = '';
+        const defaultOption = new Option('Выберите столбец', '');
+        select.add(defaultOption);
+        columns.forEach(column => {
+            console.log(column);
+            const option = new Option(column, column);
+            select.add(option);
+        })
+    }
+//  ****************************************************************************************
+
+
+// ************************ СОРТИРОВКА ФОРМ ВНУТРИ ОБЛАСТИ ПАРАМЕТРОВ **********************************
+    function moveUp(element) {
+        const previos = element.previousElementSibling;
+        if (previos){
+            if (!previos.classList.contains('lab')) {
+                parametersArea.insertBefore(element, previos);
+            }
+        }
+    }
+
+    function moveDown(element) {
+        const next = element.nextElementSibling;
+        if (next){
+            parametersArea.insertBefore(next, element);
+        }
+    }
+
+    parametersArea.addEventListener('click', (event) => {
+        const button = event.target;
+        if (button.classList.contains('up')) {
+            const block = button.closest('.block');
+            moveUp(block);
+        } else if (button.classList.contains('down')) {
+            const block = button.closest('.block');
+            moveDown(block);
+        }
+    });
+// *************************************************************************************************
+
+
+// ************************ УДАЛЕНИЕ ФОРМЫ С ОБЛАСТИ ПАРАМЕТРОВ **********************************
+function DeleteForm(name){
+    const method_div = document.querySelector(`.${name}`);
+    method_div.remove();
+    methods_forms[name]['draw_status'] = false;
+    const block_name = document.querySelector('[data-method="' + name + '"]');
+    const parent = block_name.parentNode;
+    parent.classList.remove('bg-dark');
+    parent.classList.remove('text-light');
+    if (`${name}` === 'MissingValues' || name === 'TextDataPrepare'){
+
+    }
+    else {
+        isFormInZone = false;
+    }
+}
+//  ****************************************************************************************
+
+
+// ************************ДЛЯ НАСТРОЙКИ ПЕРЕКЛЮЧАТЕЛЯ TRUE/FALSE**********************************
+    document.querySelectorAll('form-check-input').forEach(checkbox => {
+        const label = document.querySelector(`label[for="${checkbox.id}"]`);
+        label.textContent = checkbox.checked ? 'True' : 'False';
+        checkbox.value = checkbox.checked ? 'True' : 'False';
+    });
+
+    parametersArea.addEventListener('change', (event) => {
+        if (event.target.classList.contains('form-check-input')) {
+            const label = document.querySelector(`label[for="${event.target.id}"]`);
+            if (label) {
+                label.textContent = event.target.checked ? 'True' : 'False';
+                event.target.value = event.target.checked ? 'True' : 'False';
+            }
+
+        }
+    });
+// **************************************************************************************************
+
+
+//**********************************НАСТРОЙКА RANGE ЗНАЧЕНИЯ*****************************************
+    document.addEventListener('DOMContentLoaded', () => {
+
+        parametersArea.addEventListener('input', (event) => {
+            if (event.target.classList.contains('form-range')) {
+                const range = event.target;
+                const label = document.querySelector(`label[for="${range.id}"]`);
+
+                if (label) {
+                    label.textContent = 'Значение: ' + range.value;
+                }
+            }
+        });
+
+        const updateInitialValues = () => {
+            document.querySelectorAll('.form-range').forEach(range => {
+                const label = document.querySelector(`label[for="${range.id}"]`);
+                if (label) {
+                    label.textContent = 'Значение: ' + range.value;
+                }
+            });
+        };
+        updateInitialValues();
+    });
+// **************************************************************************************************
+
+
+//**********************************СКРИПТ ДЛЯ ФОРМЫ "РАБОТА С ПРОПУСКАМИ"******************************
+
+    function MissingValuesFormListener() {
+        const checkMis = document.querySelectorAll('#MissingValues .form-check-input');
+        const replaceInput = document.getElementById('replaceInput');
+        const deleteRange = document.getElementById('deleteRange');
+        checkMis.forEach(checkM => {
+            checkM.addEventListener('change', function () {
+                if (this.checked) {
+                    checkMis.forEach(cb => {
+                        if (cb !== this) {
+                            const label = document.querySelector(`label[for="${cb.id}"]`);
+                            label.textContent = 'False';
+                            cb.checked = false;
+                        }
+                    });
+                }
+
+                if (document.getElementById('replace').checked) {
+                    replaceInput.hidden = false;
+                    replaceInput.disabled = false;
+                } else {
+                    replaceInput.hidden = true;
+                    replaceInput.disabled = true;
+                }
+
+                const labelDel = document.querySelector(`label[for="${'deleteRange'}"]`);
+
+                if (document.getElementById('delete').checked) {
+                    deleteRange.hidden = false;
+                    labelDel.hidden = false;
+                    deleteRange.disabled = false;
+                } else {
+                    deleteRange.hidden = true;
+                    labelDel.hidden = true;
+                    deleteRange.disabled = true;
+                }
+            });
+        });
+    }
+// **************************************************************************************************
+
+//**********************************СБОР ДАННЫХ С ФОРМЫ*****************************************
+    submitButton.addEventListener('click', () => {
+        const formData = Array.from(parametersArea.querySelectorAll('form')).map(form => {
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox =>{
+                if (!checkbox.checked) {
+                    checkbox.value = "false";
+                    // form.appendChild(hiddenInput);
+                } else {
+                    checkbox.value = "true";
+                }
+
+                });
+            return Object.fromEntries(new FormData(form));
+        });
+
+
+        console.log(formData);
+        const combinedData = formData.reduce((result, item) => {
+            const { methods, types, ...params } = item;
+
+            if(!result[methods]) {
+                result[methods] = {};
+            }
+
+            result[methods][types] = params;
+            return result;
+        }, {});
+        console.log(combinedData)
+
+
+        fetch('/submit-forms/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(combinedData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Сервер ответил', data);
+            if (data['status'] === 'success'){
+                const button1 = document.getElementById('submit-btn');
+                console.log(button1);
+                button1.hidden = true;
+                const button = document.getElementById('but');
+                button.hidden = false;
+
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка', error);
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+// *************************************************************************************************
+
+</script>
+</body>
+</html>
