@@ -1,0 +1,171 @@
+import os
+import sweetviz as sv
+import pandas as pd
+from bs4 import BeautifulSoup
+
+class EDA_show():
+    def __init__(self, data):
+        if isinstance(data,str):
+            if data.endswith('xlsx'):
+                self.df = pd.read_csv(data)
+            if data.endswith('csv'):
+                self.df = pd.read_csv(data)
+        elif isinstance(data, pd.DataFrame):
+            self.df = data
+
+    def eda(self):
+        threshold_null = 0.9
+        threshold_duplicates = 0.95
+        
+        #if self.path.endswith('xlsx'):
+        #    df = pd.read_excel(self.path)
+        #if self.path.endswith('csv'):
+        #    df = pd.read_csv(self.path)
+
+        # Убираем колонки, в которых пропущенных значений больше 90%
+        columns_to_drop_null = self.df.columns[self.df.isnull().sum()>threshold_null*len(self.df)].tolist()
+        df = self.df.drop(columns = columns_to_drop_null)
+
+        # Убираем колонки, в которых дубликатов больше 95%
+        df = df.loc[:, df.apply(lambda x: x.value_counts().max() < len(df)*threshold_duplicates)]
+
+        # Sweetviz analyze
+        try:
+            report = sv.analyze([df,'EDA-датафрейма'])#, target_feat='BALANCE')
+            report.show_html('report.html')
+            return os.path.abspath('report.html')
+        except TypeError as e:
+            print(f'Необходимо точно указать тип данных для колонки, указанной в ошибке: {str(e)}')
+
+    def rename(self, tag, class_, rename_vals, soup):
+        for k, v in rename_vals.items():
+            find_div = soup.find_all(tag, class_=class_, string=k)
+            for element in find_div:
+                element.string = v
+
+    def translate(self, path_to_html):
+        try:
+            with open(path_to_html, 'r') as file:
+                html_content = file.read()
+
+            soup = BeautifulSoup(html_content, 'html.parser')
+
+            # Удаление логотипа
+            div_to_remove = soup.find('div', class_='pos-logo-group')
+            if div_to_remove:
+                div_to_remove.decompose()
+
+            # Словарь переименования
+            rename_vals = {'VALUES:':'КОЛИЧЕСТВО:',
+               'MISSING:':'ПРОПУЩЕННЫХ:',
+               'DISTINCT:':'УНИКАЛЬНЫХ:',
+               'ZEROES:':'НУЛИ:',
+               'MAX':'МАКС.',
+               'AVG':'СРЕДНЕЕ',
+               'MEDIAN':'МЕДИАНА',
+               'MIN':'МИН.',
+               'RANGE':'РАЗБРОС',
+               'IQR':'Q.РАЗМАХ',
+               'STD':'СТ.ОТКЛ.',
+               'VAR':'ДИСП.',
+               'KURT.':'РАСП.СР.',
+               'SKEW':'АСС.РАСП.',
+               'SUM':'СУММА',
+               'ROWS':'СТРОК',
+               'DUPLICATES':'ДУБЛЕЙ',
+               'RAM':'РАЗМЕР',
+               'FEATURES':'ПРИЗНАКОВ',
+               'CATEGORICAL':'КАТЕГОРИАЛЬНЫХ',
+               'NUMERICAL':'ЧИСЛОВЫХ',
+               'TEXT':'ТЕКСТОВЫХ',
+               'ASSOCIATIONS':'ВЗАИМОСВЯЗЬ ДАННЫХ',
+               'NUMERICAL ASSOCIATIONS':'КОРРЕЛЯЦИЯ С ЧИСЛОВЫМИ ЗНАЧЕНИЯМИ',
+               'CATEGORICAL ASSOCIATIONS':'КОРРЕЛЯЦИЯ С КАТЕГОРИАЛЬНЫМИ ЗНАЧЕНИЯМИ',
+               'MOST FREQUENT VALUES':'ЧАСТО ВСТРЕЧАЮЩИЕСЯ ЗНАЧЕНИЯ',
+               ' SMALLEST VALUES':'МИНИМАЛЬНЫЕ ЗНАЧЕНИЯ',
+               'LARGEST VALUES':'МАКСИМАЛЬНЫЕ ЗНАЧЕНИЯ',
+               """
+                (PEARSON, -1 to 1)
+            """:'КОЭФФИЦИЕНТ ПИРСОНА, если ближе к -1 - коррелияция отрицательна, если 0 - то признаки не связаны, если ближе к 1, то корреляция положительна',
+               """
+                (CORRELATION RATIO, 0 to 1)
+            """:'Коэффициент корреляции с категориальным признаком, чем больше к 1 тем больше связь признаков'}
+
+
+            # Пропущенные/Нулевые/Уникльные
+            self.rename('div', 'text-label color-normal pos-base-stats__label', rename_vals, soup)
+
+            # Перевод данных в шапке
+            self.rename('div', 'pos-df-summary-center', rename_vals, soup)
+
+            # Перевод данных в выпадающем окне справа
+            self.rename('div', 'text-large-bold', rename_vals, soup)
+
+            # Перевод статистических данных
+            self.rename('div', 'text-label', rename_vals, soup)
+
+            # Перевод текста в выпадающем окне справа
+            self.rename('div', 'text-small-bold color-light', rename_vals, soup)
+
+            # Перевод кнопки Корреляций
+            self.rename('button', 'button-assoc color-source button-border-source size-df-summary-button pos-df-summary-button-assoc-source', rename_vals, soup)
+
+           # Перевод текста при нажатии кнопки корреляции
+            find_div = soup.find_all('div', class_='text-med pos-detail-assoc-desc-text')
+            for element in find_div:
+                element.clear()
+                new_paragraph = soup.new_tag('p')
+                new_paragraph.string = """Квадраты представляют собой категориальные ассоциации (коэффициент неопределнности и коэффициент корреляции) от 0 до 1. Коэффициент неопределенности ассиметричен,
+                         (т.е. значения МЕТОК СТРОК указывают, насколько они информативны для каждой МЕТКИ ВВЕРХУ).
+                         Круги это симметричные числовые соотношения (по ПИРСОНУ) от -1 до 1. Главная диагональ намеренно оставлена пустой для наглядности"""
+                element.append(new_paragraph)
+
+            # ПЕРЕВОД КАТЕГОРИАЛЬНЫХ ПРИЗНАКОВ
+            find_div = soup.find_all('div', class_='text-small-bold color-light')
+            for element in find_div:
+                if not element.string:
+                    #print(element)
+                    if "CATEGORICAL ASSOCIATIONS" in element.text:
+                        for child in element.children:
+                            child.extract()
+                            #print(element)
+                        element.append("ВЗАИМОСВЯЗЬ С КАТЕГОРИАЛЬНЫМИ ПРИЗНАКАМИ (КОЭФФИЦИЕНТ НЕОПРЕДЕЛЕННОСТИ, от 0 до 1, чем ближе к 1, тем больше связь признаков)")
+                        #print(element)
+                    if "NUMERICAL ASSOCIATIONS" in element.text:
+                        for child in element.children:
+                            child.extract()
+                        element.append("ВЗАИМОСВЯЗЬ ЧИСЛОВЫМИ ПРИЗНАКАМИ (КОЭФФИЦИЕНТ КОРРЕЛЯЦИИ, от 0 до 1, чем ближе к 1, тем больше связь признаков")
+
+            find_div = soup.find_all('div', class_='text-large-bold')
+            for element in find_div:
+                if not element.string:
+                    #print(element)
+                    if "PROVIDES INFORMATION" in element.text:
+                        for child in element.children:
+                            child.extract()
+                            #print(element)
+                        element.append("ДАННЫЙ ПРИЗНАК ПРЕДОСТАВЛЯЕТ ИНФОРМАЦИЮ О...")
+                        #print(element)
+                    if "THESE FEATURES" in element.text:
+                        for child in element.children:
+                            child.extract()
+                        element.append("ЭТИ ПРИЗНАКИ ДАЮТ ИНФОРМАЦИЮ О ДАННОМ ПРИЗНАКЕ")
+                    if "CORRELATION RATIO WITH" in element.text:
+                        for child in element.children:
+                            child.extract()
+                        element.append("ДАННЫЙ ПРИЗНАК КОРРЕЛИРУЕТ С...")
+
+            soup.prettify()
+
+            with open('report.html', 'w') as f:
+                f.write(str(soup))
+
+            return 1
+        
+        except TypeError as e:
+            print('Файл html не создан - исправьте ошибку и повторите заново')
+
+    def main(self):
+        path_to_html = self.eda()
+        final_path = self.translate(path_to_html)
+        return final_path
