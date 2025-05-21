@@ -1,0 +1,402 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="mt-4 mx-5 justify-content-center text-center">
+        <h1 class="text-center fs-2">Введение в классификацию</h1>
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="card h-100 w-100 shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text lead">
+                            Классификация — это один из ключевых методов машинного обучения, который используется для предсказания категориальных меток на основе входных данных.
+                            В отличие от регрессии, где предсказываются непрерывные значения, классификация фокусируется на предсказании дискретных меток, таких как "да" или "нет", "красный" или "синий", "болен" или "здоров".<br>
+                            Классификация находит широкое применение в различных областях, включая медицинскую диагностику, спам-фильтрацию и распознавание изображений. Важно отметить, что классификация может быть бинарной (два класса) или многоклассовой (более двух классов), в зависимости от задачи.<br>
+                            Классификация играет важную роль в современном мире, где огромное количество данных требует автоматической обработки и анализа. Например, в медицинской диагностике классификационные модели могут помочь врачам быстрее и точнее ставить диагнозы, что в конечном итоге спасает жизни.<br>
+                            В области электронной коммерции классификация используется для рекомендаций товаров, что повышает удовлетворенность клиентов и увеличивает продажи. В сфере безопасности классификационные модели помогают обнаруживать мошеннические операции и предотвращать кибератаки.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <h1 class="text-center fs-2 mt-4">Основные методы классификации</h1>
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Логистическая регрессия</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Это базовый метод классификации, который используется для предсказания вероятности принадлежности объекта к одному из двух классов.</br>
+                        Она основана на логистической функции, которая преобразует линейную комбинацию входных признаков в вероятность.</br>
+                        Логистическая регрессия проста в реализации и интерпретации, что делает её популярным выбором для начальных этапов анализа данных. Этот метод хорошо работает на линейно разделимых данных и часто используется в задачах, где важна интерпретируемость модели.</br>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">K-ближайших соседей (KNN)</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Метод K-ближайших соседей классифицирует объект на основе меток его ближайших соседей в пространстве признаков. Этот метод прост в реализации и часто используется для задач с небольшими объемами данных.
+                        KNN не требует обучения модели, так как все вычисления происходят в момент предсказания. Однако, этот метод может быть вычислительно затратным на больших объемах данных и чувствителен к выбору метрики расстояния.
+                        KNN также может быть использован для задач регрессии, что делает его универсальным инструментом.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Деревья решений</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Деревья решений строят модель в виде дерева, где каждый узел представляет собой проверку на определенный признак, а каждый лист — предсказание класса.
+                        Деревья решений легко интерпретировать и визуализировать, что делает их популярными в бизнес-аналитике. Этот метод способен работать с нелинейными зависимостями и может обрабатывать как категориальные, так и числовые признаки.
+                        Однако, деревья решений склонны к переобучению, особенно на небольших объемах данных, поэтому часто используются в комбинации с другими методами.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Случайный лес</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Это ансамблевый метод, который строит множество деревьев решений и объединяет их предсказания для улучшения точности и устойчивости модели.
+                        Этот метод эффективен для задач с большим количеством признаков и данных.
+                        Случайный лес уменьшает вероятность переобучения за счет использования случайных подвыборок данных и признаков для построения каждого дерева.
+                        Этот метод также обладает высокой устойчивостью к шуму в данных и может обрабатывать пропущенные значения.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Метод опорных векторов (SVM)</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Метод опорных векторов ищет гиперплоскость, которая максимально разделяет классы в пространстве признаков. SVM хорошо работает с высокоразмерными данными и часто используется в задачах распознавания изображений и текста.
+                        Этот метод может быть расширен для работы с нелинейными зависимостями с помощью ядровых функций, что делает его мощным инструментом для сложных задач. Однако, SVM требует тщательной настройки гиперпараметров и может быть вычислительно затратным.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Нейронные сети</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Нейронные сети, особенно глубокие нейронные сети, способны моделировать сложные зависимости в данных и часто используются для задач, требующих высокой точности, таких как распознавание речи и изображений.
+                        Нейронные сети состоят из множества слоев нейронов, которые обучаются на основе данных, что позволяет им выявлять сложные паттерны и зависимости.
+                        Этот метод требует больших вычислительных ресурсов и данных для обучения, но может достигать высоких результатов на сложных задачах.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <h1 class="text-center fs-2 mt-4">Примеры использования классификации</h1>
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Медицинская диагностика</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Классификация используется для предсказания наличия или отсутствия заболеваний на основе медицинских данных. Например, модель может предсказывать вероятность сердечного приступа на основе таких признаков, как возраст, вес и уровень холестерина.
+                        В онкологии классификационные модели помогают выявлять злокачественные опухоли на ранних стадиях, что значительно увеличивает шансы на успешное лечение. В области генетики классификация используется для анализа генетических данных и предсказания наследственных заболеваний.ческая регрессия проста в реализации и интерпретации, что делает её популярным выбором для начальных этапов анализа данных. Этот метод хорошо работает на линейно разделимых данных и часто используется в задачах, где важна интерпретируемость модели.</br>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Спам-фильтрация</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Электронные почтовые сервисы используют классификацию для фильтрации спам-сообщений. Модель обучается на примерах спам и не-спам писем и затем классифицирует новые сообщения.
+                        Современные спам-фильтры используют методы машинного обучения для адаптации к новым типам спама, что делает их более эффективными.
+                        Классификация также используется для фильтрации нежелательных сообщений в социальных сетях и мессенджерах, что повышает безопасность и комфорт пользователей
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Распознавание изображений</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Классификация применяется для распознавания объектов на изображениях. Например, модель может классифицировать изображения на категории "кот", "собака" или "птица".
+                        В медицине классификационные модели используются для анализа медицинских изображений, таких как рентгеновские снимки и МРТ, для выявления патологий.
+                        В автомобильной индустрии классификация используется в системах автономного вождения для распознавания дорожных знаков и пешеходов, что повышает безопасность на дорогах.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100 w-100 shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-center align-items-center">
+                    <i class="bi bi-journal-bookmark fs-3 me-3"></i>
+                    <h3 class="card-title mb-0">Финансовые прогнозы</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text lead">
+                        Банки и финансовые учреждения используют классификацию для предсказания дефолтов по кредитам. Модель анализирует кредитную историю и другие финансовые данные клиента для принятия решения.
+                        Классификация также используется для обнаружения мошеннических транзакций и предотвращения финансовых потерь. В инвестициях классификационные модели помогают анализировать рыночные данные и предсказывать изменения цен на акции, что позволяет инвесторам принимать более обоснованные решения.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 class="text-center fs-2 mt-4 mb-4">Преимущества и недостатки различных методов</h1>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-white fs-5">
+                        <i class="bi bi-journal-bookmark" me-2></i>
+                        Логистическая регрессия
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-success">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Преимущества
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i> Простота и интерпретируемость</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Эффективность на линейно разделимых данных</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Быстрая и простая реализация</li>
+                                </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-danger">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Недостатки
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Ограниченная мощность для нелинейных зависимостей</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Чувствительность к выбросам и мультиколлинеарности</li>
+                                </ul>
+                        </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+                        <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-white fs-5">
+                        <i class="bi bi-journal-bookmark" me-2></i>
+                        K-ближайших соседей
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-success">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Преимущества
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i> Простота реализации</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Хорошо работает на небольших объемах данных</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Не требует обучения модели</li>
+                                </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-danger">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Недостатки
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Высокие вычислительные затраты на больших данных</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Чувствительность к выбору метрики расстояния</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Плохая масштабируемость</li>
+                                </ul>
+                        </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+ <div class="row g-4  mt-2">
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-white fs-5">
+                        <i class="bi bi-journal-bookmark" me-2></i>
+                        Деревья решений
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-success">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Преимущества
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Легкость интерпретации и визуализации</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Способность работать с нелинейными зависимостями</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Обработка категориальных и числовых признаков</li>
+                                </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-danger">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Недостатки
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Склонность к переобучению</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Ограниченная обобщающая способность</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Чувствительность к шуму в данных</li>
+                                </ul>
+                        </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+                        <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-white fs-5">
+                        <i class="bi bi-journal-bookmark" me-2></i>
+                        Случайный лес
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-success">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Преимущества
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Высокая точность и устойчивость</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Способность работать с большими данными
+</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Устойчивость к шуму и пропущенным значениям</li>
+                                </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-danger">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Недостатки
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Высокие вычислительные затраты на больших данных</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Чувствительность к выбору метрики расстояния</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Плохая масштабируемость</li>
+                                </ul>
+                        </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row g-4 mt-2 mb-5">
+            <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-white fs-5">
+                        <i class="bi bi-journal-bookmark" me-2></i>
+                       Метод опорных векторов
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-success">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Преимущества
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Эффективность на высокоразмерных данных</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Хорошая обобщающая способность</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Возможность работы с нелинейными зависимостями</li>
+                                </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-danger">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Недостатки
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Высокие вычислительные затраты</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Сложность настройки гиперпараметров</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Чувствительность к выбору ядровой функции</li>
+                                </ul>
+                        </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+                        <div class="col-md-6">
+                <div class="card h-100 shadow">
+                    <div class="card-header bg-white fs-5">
+                        <i class="bi bi-journal-bookmark" me-2></i>
+                        Нейронные сети
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-success">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Преимущества
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Способность моделировать сложные зависимости</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Высокая точность на больших данных
+</li>
+                                    <li class="list-group-item"><i class="bi bi-check-lg text-success me-2"></i>Возможность работы с различными типами данных</li>
+                                </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5 class="text-danger">
+                                <i class="bi bi-check2-circle me-2"></i>
+                                 Недостатки
+                            </h5>
+                                <ul class="list-group list-group-flash">
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Требуют больших вычислительных ресурсов</li>
+                                    <li class="list-group-item"><i class="bi bi-x-circle text-danger me-2"></i>Сложность интерпретации</li>
+                                </ul>
+                        </div>
+                            </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+</div>
+
+{% endblock %}
