@@ -1,0 +1,41 @@
+{% load static %}
+<html lang="ru" data-bs-theme="dark">
+<head>
+    <title>ML helper</title>
+    <link rel="icon" href="{% static 'icon_mlhelper.png' %}">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+     <link rel="stylesheet" href="{% static 'bootstrapicons/font/bootstrap-icons.css' %}">
+</head>
+<body style="margin: 0;" class="bg-light">
+
+    <header class="navbar navbar-expand-lg border-bottom bg-dark sticky-top text-center text-light  py-2">
+        <div class="container">
+            <div class="col-lg-6 d-flex justify-content-start align-items-center">
+                <img src="{% static 'icon_mlhelper.png' %}" width="60">
+                <li class="nav-link fs-4 px-5">ML helper</li>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-end  align-items-center">
+                <i class="bi bi-door-open fs-1"></i>
+                <a href="{% url 'methods' %}" class="nav-link link-light fs-4 px-2">Назад</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="bg-light">
+        <div class="text-center justify-content-center bg-light">
+                {% block content %}{% endblock %}
+        </div>
+    </main>
+
+
+    <div class="bg-dark fixed-bottom" style="width: 100%">
+        <footer class="">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            </ul>
+        </footer>
+    </div>
+
+</body>
+</html>
